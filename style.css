@@ -1,6 +1,6 @@
 * {
-    background-color: aqua;
-}
+  background-color: aqua;
+  text-align: center;}
 
 .color{
   width: 50px;
@@ -8,5 +8,4 @@
   border: solid 1px black;
   display: inline-block;
   text-align: center;
-  margin: 5px;
-}
+  margin: 5px;}
