@@ -38,17 +38,22 @@ const paintDivsColor = () => {
   for (let index = 1; index < getDivColors.length; index += 1) {
     palletColors.push(randomColors());
   }
+  const verify = palletColors[1];
+  for (let index = 2; index < palletColors.length; index += 1) {
+    if (palletColors[index] === verify) {
+      palletColors.splice(index, index, randomColors());
+    }
+  }
   for (let index = 0; index < palletColors.length; index += 1) {
     getDivColors[index].style.backgroundColor = palletColors[index];
   }
-
-  return palletColors;
+  const button = document.querySelector('#button-random-color');
+  button.addEventListener('click', paintDivsColor);
 };
 
-const creaPixell = (turn) => {
+const creatPixell = (turn) => {
   const getSectionPalette = document.querySelector('#color-pixel');
   for (let index = 0; index < turn; index += 1) {
-    // eslint-disable-next-line sonarjs/no-use-of-empty-return-value
     // elemento, idElemento, posicao, text, classElement
     creatElements('div', '', getSectionPalette, '', 'pixel');
   }
@@ -59,8 +64,8 @@ window.onload = () => {
   creatElements('h1', 'title', body, 'Paleta de Cores');
   creatElements('section', 'color-palette', body);
   creatPallet(4);
-  creatElements('section', 'color-pixel', body);
   creatElements('button', 'button-random-color', body, 'Cores aleatórias');
-  creaPixell(25);
+  creatElements('section', 'color-pixel', body);
+  creatPixell(25);
   paintDivsColor();
 };
