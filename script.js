@@ -16,17 +16,7 @@ const creatPallet = (turn) => {
   for (let index = 0; index < turn; index += 1) {
     // eslint-disable-next-line sonarjs/no-use-of-empty-return-value
     creatElements('div', '', getSectionPalette, '', 'color');
-    const getDivs = document.querySelectorAll('.color');
   }
-};
-
-const createbutton = () => {
-  const setbuton = document.createElement('button');
-  setbuton.id = 'button-random-color';
-  setbuton.innerText = 'Cores aleatórias';
-  body.appendChild(setbuton);
-  // eslint-disable-next-line no-use-before-define
-  setbuton.addEventListener('click', paintDivsColor);
 };
 
 const randomColors = () => {
@@ -36,12 +26,22 @@ const randomColors = () => {
   return `rgb(${r},${g},${b})`;
 };
 
+const paintDivsColor = () => {
+  for (let index = 1; index < getDivColors.length; index += 1) {
+    palletColors[index] = randomColors();
+  }
+  const getDivColors = document.querySelectorAll('.color')[0];
+  getDivColors.style.backgroundcolor = palletColors[0];
+
+};
 
 // inicialização da página
 window.onload = () => {
   // elemento, idElemento, posicao, text, classElement
   creatElements('h1', 'title', body, 'Paleta de Cores');
   creatElements('section', 'color-palette', body);
-  creatPallet(4);
-  createbutton();
+  creatPallet(5);
+  creatElements('button', 'button-random-color', body, 'Cores aleatórias');
+
+  console.log(paintDivsColor());
 };
