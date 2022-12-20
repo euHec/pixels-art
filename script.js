@@ -1,5 +1,6 @@
+/* eslint-disable max-params */
 // função principal
-const creatElements = (elemento, idElemento, posicao, text, classElement) => {
+function creatElements(elemento, idElemento, posicao, text, classElement) {
   const criando = document.createElement(elemento);
   if (text !== undefined) {
     criando.innerText = text;
@@ -11,18 +12,32 @@ const creatElements = (elemento, idElemento, posicao, text, classElement) => {
     criando.id = idElemento;
   }
   posicao.appendChild(criando);
-};
+}
 // capturando elementos globais
 const body = document.querySelector('body');
 
 // funções
 // Criando paleta de cores
-const creatPallet = (turn) => {
-  const getSectionPalette = document.querySelector('#color-palette');
+function creatPalette(turn) {
   for (let index = 0; index < turn; index += 1) {
+    // eslint-disable-next-line sonarjs/no-duplicate-string
+    const sectionPalette = document.querySelector('#section-palette');
     // elemento, idElemento, posicao, text, classElement
-    creatElements('div', '', getSectionPalette, '', 'color');
+    creatElements('div', 'color-palette', sectionPalette, '', 'color');
   }
+}
+// cores randomicas
+const randomColors = () => {
+  const r = Math.round(Math.random() * 255);
+  const g = Math.round(Math.random() * 255);
+  const b = Math.round(Math.random() * 255);
+  return `rgb(${r},${g},${b})`;
+};
+// função para guardar dados
+const saveLocalStorage = () => {
+  // capturando as divs com classe color
+  const setPalette = document.querySelector('#section-palette');
+  localStorage.setItem('colorPalette', `${setPalette.innerHTML}`);
 };
 // Criando botão
 const creatButton = () => {
@@ -34,34 +49,7 @@ const creatButton = () => {
   button.addEventListener('click', paintDivsColor);
   button.addEventListener('click', saveLocalStorage);
 };
-// função para guardar dados
-const saveLocalStorage = () => {
-  // capturando as divs com classe color
-  const getDivColors = document.querySelectorAll('.color');
-
-  // Percorrendo as divs e imprimindo no console e adicionando ao local storage
-  for (let index = 0; index < getDivColors.length; index += 1) {
-    getDivColors[index].addEventListener('click', (event) => {
-      console.log(event.target.style.backgroundColor);
-      window.localStorage.setItem(`colorPalette${index}`, `${event.target.style.backgroundColor}`);
-    });
-  }
-};
-// função recarregar dados
-const reloadStore = () => {
-  const getDivColors = document.querySelectorAll('.color');
-  for (let index = 0; index < localStorage.length; index += 1) {
-    getDivColors[index].style.backgroundColor = localStorage.getItem(`colorPalette${index}`);
-  }
-};
-// cores randomicas
-const randomColors = () => {
-  const r = Math.round(Math.random() * 255);
-  const g = Math.round(Math.random() * 255);
-  const b = Math.round(Math.random() * 255);
-  return `rgb(${r},${g},${b})`;
-};
-  // Função que pinta cores
+// Função que pinta cores
 const paintDivsColor = () => {
   const palletColors = ['rgb(0,0,0)'];
   const getDivColors = document.querySelectorAll('.color');
@@ -77,6 +65,11 @@ const paintDivsColor = () => {
   for (let index = 0; index < palletColors.length; index += 1) {
     getDivColors[index].style.backgroundColor = palletColors[index];
   }
+};
+// função recarregar dados
+const reloadStore = () => {
+  const getPalette = document.querySelector('#section-palette');
+  getPalette.innerHTML = localStorage.getItem('colorPalette');
 };
 
 // const creatPixell = (turn) => {
@@ -98,12 +91,19 @@ const paintDivsColor = () => {
 
 // inicialização da página
 window.onload = () => {
+  // Criando elemento H1
   // elemento, idElemento, posicao, text, classElement
   creatElements('h1', 'title', body, 'Paleta de Cores');
-  creatElements('section', 'color-palette', body);
-  creatPallet(4);
+  // Criando sessão dos pallets
+  creatElements('section', 'section-palette', body);
+  // criando pallets
+  creatPalette(4);
+  // Criando botão
   creatButton();
-  creatElements('section', 'color-pixel', body);
-  // creatPixell(25);
+  // Pintando paletas
+  paintDivsColor();
+  // Criando section das divs
+  creatElements('section', 'color-pixel', body, '', '');
+  // Restaurando as cores das paletas salvas no local storage
   reloadStore();
 };
