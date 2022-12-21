@@ -15,13 +15,13 @@ function creatElements(elemento, idElemento, posicao, text, classElement) {
 }
 // capturando elementos globais
 const body = document.querySelector('body');
-
+const sectionPalette = document.querySelector('#section-palette');
+const sectionButton = document.querySelector('#section-button');
+const getSectionPalette = document.querySelector('#color-pixel');
 // funções
 // Criando paleta de cores
 function creatPalette(turn) {
   for (let index = 0; index < turn; index += 1) {
-    // eslint-disable-next-line sonarjs/no-duplicate-string
-    const sectionPalette = document.querySelector('#section-palette');
     // elemento, idElemento, posicao, text, classElement
     creatElements('div', 'color-palette', sectionPalette, '', 'color');
   }
@@ -36,13 +36,12 @@ const randomColors = () => {
 // função para guardar dados
 const saveLocalStorage = () => {
   // capturando as divs com classe color
-  const setPalette = document.querySelector('#section-palette');
-  localStorage.setItem('colorPalette', `${setPalette.innerHTML}`);
+  localStorage.setItem('colorPalette', `${sectionPalette.innerHTML}`);
 };
 // Criando botão
 const creatButton = () => {
   // elemento, idElemento, posicao, text, classElement
-  creatElements('button', 'button-random-color', body, 'Cores aleatórias');
+  creatElements('button', 'button-random-color', sectionButton, 'Cores aleatórias');
   // capturando o botão
   const button = document.querySelector('#button-random-color');
   // Adicionando evento para pintar
@@ -68,15 +67,32 @@ const paintDivsColor = () => {
 };
 // função recarregar dados
 const reloadStore = () => {
-  const getPalette = document.querySelector('#section-palette');
-  getPalette.innerHTML = localStorage.getItem('colorPalette');
+  sectionPalette.innerHTML = localStorage.getItem('colorPalette');
 };
 
-// const creatPixell = (turn) => {
-//   const getSectionPalette = document.querySelector('#color-pixel');
-//   for (let index = 0; index < turn; index += 1) {
-//     // elemento, idElemento, posicao, text, classElement
-//     creatElements('div', 'pixel-board', getSectionPalette, '', 'pixel');
+const creatPixell = () => {
+  const creatDivPallet = document.createElement('div');
+  creatDivPallet.className = 'pixel-board';
+  getSectionPalette.appendChild(creatDivPallet);
+  for (let index = 0; index < 5; index += 1) {
+    const line = document.createElement('div');
+    creatDivPallet.appendChild(line);
+    for (let index1 = 0; index1 < 5; index1 += 1) {
+      const colun = document.createElement('div');
+      colun.className = 'pixel';
+      line.appendChild(colun);
+    }
+  }
+};
+
+// const creatPixell = () => {
+//   // elemento, idElemento, posicao, text, classElement
+//   for (let colun = 0; colun < 5; colun += 1) {
+//     creatElements('div', 'pixel-board', getSectionPalette, '', '');
+//     for (let line = 0; line < 5; line += 1) {
+//       const divColun = document.querySelector('#pixel-board');
+//       creatElements('div', 'pixel-board', divColun, '', 'pixel');
+//     }
 //   }
 // };
 
@@ -91,19 +107,14 @@ const reloadStore = () => {
 
 // inicialização da página
 window.onload = () => {
-  // Criando elemento H1
-  // elemento, idElemento, posicao, text, classElement
-  creatElements('h1', 'title', body, 'Paleta de Cores');
-  // Criando sessão dos pallets
-  creatElements('section', 'section-palette', body);
   // criando pallets
   creatPalette(4);
   // Criando botão
   creatButton();
   // Pintando paletas
   paintDivsColor();
-  // Criando section das divs
-  creatElements('section', 'color-pixel', body, '', '');
+  // Criando matriz
+  creatPixell();
   // Restaurando as cores das paletas salvas no local storage
   reloadStore();
 };

@@ -9,10 +9,11 @@
   display: inline-block;
   margin: 5px;}
 
-#pixel-board{
+.pixel{
   width: 50px;
   height: 50px;
   border: solid 1px black;
   display: inline-block;
   margin: 5px;
+  background-color: white;
 }
