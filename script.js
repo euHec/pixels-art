@@ -18,7 +18,6 @@ const body = document.querySelector('body');
 const sectionPalette = document.querySelector('#section-palette');
 const sectionButton = document.querySelector('#section-button');
 const getSectionPalette = document.querySelector('#color-pixel');
-// const selected = document.querySelector('.selected');
 const colorPalette = localStorage.getItem('colorPalette');
 
 // Criando paleta de cores
@@ -103,23 +102,33 @@ const creatPixell = (turn1, turn2) => {
 };
 
 // Função para capturar cores
-const getColor = () => {
-  const getDivColors = document.querySelectorAll('.color');
-  for (let index = 0; index < getDivColors.length; index += 1) {
-    getDivColors[index].addEventListener('click', (event) => {
-      console.log(event.target.style.backgroundColor);
-      selected = event.target.style.backgroundColor;
+// eslint-disable-next-line max-lines-per-function
+const selectedColor = () => {
+  const getColors = document.querySelectorAll('#color-palette');
+  getColors[0].className = 'color selected';
+  for (let index = 0; index < getColors.length; index += 1) {
+    getColors[index].addEventListener('click', () => {
+      for (let index1 = 0; index1 < getColors.length; index1 += 1) {
+        if (getColors[index1].className === 'color selected') {
+          getColors[index1].className = 'color';
+        }
+      }
+      if (getColors[index].className === 'color') {
+        getColors[index].className = 'color selected';
+      }
     });
-    // paintDivs();
   }
+  saveLocalStorage();
 };
 
 // Função para pintar cores
-const paintDivs = () => {
+const paintPixels = () => {
   const getPixels = document.querySelectorAll('.pixel');
   for (let index = 0; index < getPixels.length; index += 1) {
-    getPixels.addEventListener('click', () => {
-      // getPixels = selected;
+    getPixels[index].addEventListener('click', () => {
+      const selected = document.querySelector('.selected');
+      console.log(selected.style.backgroundColor);
+      getPixels[index].style.backgroundColor = `${selected.style.backgroundColor}`;
     });
   }
 };
@@ -138,4 +147,9 @@ window.onload = () => {
   // inserindo pixels
   creatPixell(5, 5);
 
+  // selecionando cor
+  selectedColor();
+
+  // Pintando pixels
+  paintPixels();
 };
