@@ -88,7 +88,7 @@ const creatButton = () => {
 // Função que cria pixells
 const creatPixell = (turn1, turn2) => {
   const creatDivPallet = document.createElement('div');
-  creatDivPallet.className = 'pixel-board';
+  creatDivPallet.id = 'pixel-board';
   getSectionPalette.appendChild(creatDivPallet);
   for (let index = 0; index < turn1; index += 1) {
     const line = document.createElement('div');
@@ -133,6 +133,20 @@ const paintPixels = () => {
   }
 };
 
+const clearPixel = () => {
+  // elemento, idElemento, posicao, text, classElement
+  creatElements('button', 'clear-board', sectionButton, 'Limpar');
+  // capturando o botão
+  const buttonClear = document.querySelector('#clear-board');
+  // Adicionando evento para limpar as cores
+  buttonClear.addEventListener('click', () => {
+    const getPixels = document.querySelectorAll('.pixel');
+    for (let index = 0; index < getPixels.length; index += 1) {
+      getPixels[index].style.backgroundColor = 'rgb(255,255,255)';
+    }
+  });
+};
+
 // inicialização da página
 window.onload = () => {
   // criando pallets
@@ -143,7 +157,7 @@ window.onload = () => {
 
   // inserindo botão
   creatButton();
-
+  clearPixel();
   // inserindo pixels
   creatPixell(5, 5);
 
