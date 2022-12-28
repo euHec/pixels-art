@@ -19,17 +19,21 @@ const sectionPalette = document.querySelector('#section-palette');
 const sectionButton = document.querySelector('#section-button');
 const getSectionPalette = document.querySelector('#color-pixel');
 const sectionInput = document.querySelector('#section-inputs');
+// Local Storage
 const colorPalette = localStorage.getItem('colorPalette');
 const pixelBoard = localStorage.getItem('pixelBoard');
 const boardSize = localStorage.getItem('boardSize');
 
 // Criando paleta de cores
 function creatPalette(turn) {
+  const divPallet = document.createElement('div');
+  divPallet.id = 'color-palette';
+  sectionPalette.appendChild(divPallet);
   for (let index = 0; index < turn; index += 1) {
+    const getDivPallet = document.querySelector('#color-palette');
     const generetePalette = document.createElement('div');
-    generetePalette.id = 'color-palette';
     generetePalette.className = 'color';
-    sectionPalette.appendChild(generetePalette);
+    getDivPallet.appendChild(generetePalette);
   }
 }
 
@@ -101,7 +105,7 @@ const creatButton = () => {
 // Função para capturar cores
 // eslint-disable-next-line max-lines-per-function
 const selectedColor = () => {
-  const getColors = document.querySelectorAll('#color-palette');
+  const getColors = document.querySelectorAll('.color');
   getColors[0].className = 'color selected';
   for (let index = 0; index < getColors.length; index += 1) {
     getColors[index].addEventListener('click', () => {
@@ -147,7 +151,7 @@ const clearPixel = () => {
 
 // Função que cria pixells
 // eslint-disable-next-line max-lines-per-function, complexity, sonarjs/cognitive-complexity
-const creatPixell = (turn) => {
+const creatPixell = (turn) => {   
   const creatDivPallet = document.createElement('div');
   creatDivPallet.id = 'pixel-board';
   getSectionPalette.appendChild(creatDivPallet);
@@ -229,6 +233,7 @@ const creatPixell = (turn) => {
       }
     }
   }
+  paintPixels();
   savePixelBoard();
 };
 
