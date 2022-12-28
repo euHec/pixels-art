@@ -18,7 +18,9 @@ const body = document.querySelector('body');
 const sectionPalette = document.querySelector('#section-palette');
 const sectionButton = document.querySelector('#section-button');
 const getSectionPalette = document.querySelector('#color-pixel');
+const sectionInput = document.querySelector('#section-inputs');
 const colorPalette = localStorage.getItem('colorPalette');
+const pixelBoard = localStorage.getItem('pixelBoard');
 
 // Criando paleta de cores
 function creatPalette(turn) {
@@ -40,8 +42,8 @@ const randomColors = () => {
 
 // função para guardar dados
 const saveLocalStorage = () => {
-  // capturando as divs com classe color
   localStorage.setItem('colorPalette', `${sectionPalette.innerHTML}`);
+  localStorage.setItem('pixelBoard', `${getSectionPalette.innerHTML}`);
 };
 
 // Função que pinta cores
@@ -72,6 +74,9 @@ const verify = () => {
     paintDivsColor();
     saveLocalStorage();
   }
+  if (pixelBoard) {
+    getSectionPalette.innerHTML = localStorage.getItem('pixelBoard');
+  }
 };
 
 // Criando botão
@@ -83,22 +88,6 @@ const creatButton = () => {
   // Adicionando evento para pintar
   button.addEventListener('click', paintDivsColor);
   button.addEventListener('click', saveLocalStorage);
-};
-
-// Função que cria pixells
-const creatPixell = (turn1, turn2) => {
-  const creatDivPallet = document.createElement('div');
-  creatDivPallet.id = 'pixel-board';
-  getSectionPalette.appendChild(creatDivPallet);
-  for (let index = 0; index < turn1; index += 1) {
-    const line = document.createElement('div');
-    creatDivPallet.appendChild(line);
-    for (let index1 = 0; index1 < turn2; index1 += 1) {
-      const colun = document.createElement('div');
-      colun.className = 'pixel';
-      line.appendChild(colun);
-    }
-  }
 };
 
 // Função para capturar cores
@@ -118,7 +107,6 @@ const selectedColor = () => {
       }
     });
   }
-  saveLocalStorage();
 };
 
 // Função para pintar cores
@@ -127,12 +115,13 @@ const paintPixels = () => {
   for (let index = 0; index < getPixels.length; index += 1) {
     getPixels[index].addEventListener('click', () => {
       const selected = document.querySelector('.selected');
-      console.log(selected.style.backgroundColor);
       getPixels[index].style.backgroundColor = `${selected.style.backgroundColor}`;
+      saveLocalStorage();
     });
   }
 };
 
+// Função para limpar quadro de pixels
 const clearPixel = () => {
   // elemento, idElemento, posicao, text, classElement
   creatElements('button', 'clear-board', sectionButton, 'Limpar');
@@ -144,6 +133,74 @@ const clearPixel = () => {
     for (let index = 0; index < getPixels.length; index += 1) {
       getPixels[index].style.backgroundColor = 'rgb(255,255,255)';
     }
+    saveLocalStorage();
+  });
+};
+
+// Função que cria pixells
+// eslint-disable-next-line max-lines-per-function, complexity, sonarjs/cognitive-complexity
+const creatPixell = (turn) => {
+  const creatDivPallet = document.createElement('div');
+  creatDivPallet.id = 'pixel-board';
+  getSectionPalette.appendChild(creatDivPallet);
+
+  if (turn >= 5 && turn <= 50) {
+    for (let index = 0; index < turn; index += 1) {
+      const line = document.createElement('div');
+      creatDivPallet.appendChild(line);
+      for (let index1 = 0; index1 < turn; index1 += 1) {
+        const colun = document.createElement('div');
+        colun.className = 'pixel';
+        line.appendChild(colun);
+      }
+    }
+    saveLocalStorage();
+  }
+  if (turn >= 1 && turn < 5) {
+    for (let index = 1; index <= 5; index += 1) {
+      const line = document.createElement('div');
+      creatDivPallet.appendChild(line);
+      for (let index1 = 1; index1 <= 5; index1 += 1) {
+        const colun = document.createElement('div');
+        colun.className = 'pixel';
+        line.appendChild(colun);
+      }
+    }
+    saveLocalStorage();
+  }
+  if (turn > 50) {
+    for (let index = 1; index <= 50; index += 1) {
+      const line = document.createElement('div');
+      creatDivPallet.appendChild(line);
+      for (let index1 = 1; index1 <= 50; index1 += 1) {
+        const colun = document.createElement('div');
+        colun.className = 'pixel';
+        line.appendChild(colun);
+      }
+    }
+    saveLocalStorage();
+  }
+};
+
+// eslint-disable-next-line max-lines-per-function
+const input = () => {
+  const getInput = document.querySelector('#board-size');
+  const getInputButton = document.querySelector('#generate-board');
+  if (pixelBoard === '') {
+    creatPixell(5);
+  }
+  getInputButton.addEventListener('click', () => {
+    const idPixel = document.querySelectorAll('.pixel');
+    if (idPixel) {
+      for (let index = 0; index < idPixel.length; index += 1) {
+        idPixel[index].remove();
+      }
+    }
+    if (getInput.value === '') {
+      alert('Board inválido!');
+      verify();
+    }
+    creatPixell(getInput.value);
   });
 };
 
@@ -151,19 +208,16 @@ const clearPixel = () => {
 window.onload = () => {
   // criando pallets
   creatPalette(4);
-
   // pintando paletas e salvando no localStorage
   verify();
-
   // inserindo botão
   creatButton();
-  clearPixel();
-  // inserindo pixels
-  creatPixell(5, 5);
-
   // selecionando cor
   selectedColor();
-
   // Pintando pixels
   paintPixels();
+  // Limpando pixels
+  clearPixel();
+  // inserindo pixels
+  input();
 };
