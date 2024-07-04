@@ -1,13 +1,71 @@
-* {
-  background-color: aqua;
-  text-align: center;}
+body {
+  background-color: rgb(50, 46, 46);
+  text-align: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
-.color{
+#title {
+  font-family: Rubik Vinyl;
+  text-align: center;
+  font-size: 50px;
+  width: 450px;
+  box-shadow: 5px 5px 5px rgb(0, 0, 0);
+  margin: auto;
+  margin-bottom: 10px;
+  border-radius: 30px;
+  background-color: white;
+}
+
+#section-inputs{
+  font-family: Fredoka One;
+  background-color: white;
+  width: 300px;
+  margin: auto;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+#section-palette{
+  font-family: Fredoka One;
+  background-color: white;
+  width: 300px;
+  margin: auto;
+  padding: 5px;
+}
+
+#section-button{
+  font-family: Fredoka One;
+  background-color: white;
+  width: 300px;
+  margin: auto;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+#button-random-color{
+  margin-right: 5px;
+  font-family: Fredoka One;
+  border-radius: 5px;
+}
+
+#clear-board{
+  border-radius: 5px;
+  font-family: Fredoka One;
+}
+
+.board-size, .generate-board{
+  border-radius: 5px;
+  font-family: Fredoka One;
+}
+
+.color, #color{
   width: 50px;
   height: 50px;
   border: solid 1px black;
   display: inline-block;
   margin: 5px;
+  border-radius: 5px;
 }
 
 .pixel{
@@ -21,4 +79,15 @@
 
 .pixel-board{
   margin-top: 10px;
+}
+
+.input{
+  display: inline-block;
+  margin: 5px;
+  border-radius: 5px;
+  border: solid 1px black;
+}
+
+.numbersColors{
+  font-family: Fredoka One;
 }

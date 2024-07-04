@@ -6,16 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rubik+Vinyl&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Rubik+Vinyl&display=swap" rel="stylesheet">
     <title>Paleta de cores</title>
 </head>
 <body>
     <h1 id="title">Paleta de Cores</h1>
-    <section id="section-palette"></section>
+    <section id="section-palette">
+    </section>
     <section id="section-button"></section>
     <section id="section-inputs">
-        <label>Número de quadros: </label>
-        <input type="number" id="board-size" min="1" max="50">
-        <button id="generate-board">VQV</button>
+        <label>Número de quadros: </label><br>
+        <input type="number" id="numbersPixel" class="board-size" min="1" max="50">
+        <button id="vqv" class="generate-board">VQV</button>
     </section>
     <section id="color-pixel"></section>
 <script src="script.js"></script>

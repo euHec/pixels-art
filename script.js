@@ -25,18 +25,29 @@ const pixelBoard = localStorage.getItem('pixelBoard');
 const boardSize = localStorage.getItem('boardSize');
 
 // Criando paleta de cores
+// eslint-disable-next-line max-lines-per-function
 function creatPalette(turn) {
-  const divPallet = document.createElement('div');
-  divPallet.id = 'color-palette';
-  sectionPalette.appendChild(divPallet);
-  for (let index = 0; index < turn; index += 1) {
-    const getDivPallet = document.querySelector('#color-palette');
-    const generetePalette = document.createElement('div');
-    generetePalette.className = 'color';
-    getDivPallet.appendChild(generetePalette);
+  for (let index = 0; index < 3; index += 1) {
+    const divPallet = document.createElement('div');
+    divPallet.id = 'color-palette';
+    sectionPalette.appendChild(divPallet);
+  }
+  const getDivPallet = document.querySelectorAll('#color-palette');
+  for (let index2 = 0; index2 < turn; index2 += 1) {
+    const generetePalette1 = document.createElement('div');
+    const generetePalette2 = document.createElement('div');
+    generetePalette1.className = 'color';
+    generetePalette2.id = 'color';
+    getDivPallet[0].appendChild(generetePalette1);
+    getDivPallet[1].appendChild(generetePalette2);
+  }
+  for (let index1 = 0; index1 < turn; index1 += 1) {
+    const genereteInput = document.createElement('input');
+    genereteInput.type = 'color';
+    genereteInput.className = 'input';
+    getDivPallet[2].appendChild(genereteInput);
   }
 }
-
 // cores randomicas
 const randomColors = () => {
   const r = Math.round(Math.random() * 255);
@@ -44,22 +55,19 @@ const randomColors = () => {
   const b = Math.round(Math.random() * 255);
   return `rgb(${r},${g},${b})`;
 };
-
 // função para guardar dados
 const saveColorPalette = () => {
   localStorage.setItem('colorPalette', `${sectionPalette.innerHTML}`);
 };
-
 const savePixelBoard = () => {
   localStorage.setItem('pixelBoard', `${getSectionPalette.innerHTML}`);
 };
-
 const saveBoardSize = () => {
   const getInput = document.querySelector('#board-size');
   localStorage.setItem('boardSize', `${getInput.value}`);
 };
-
 // Função que pinta cores
+// eslint-disable-next-line max-lines-per-function, complexity
 const paintDivsColor = () => {
   const getDivColors = document.querySelectorAll('.color');
   const palletColors = ['rgb(0,0,0)'];
@@ -80,7 +88,17 @@ const paintDivsColor = () => {
   }
   saveColorPalette();
 };
-
+const paintOtherDivs = () => {
+  const getClassInput = document.querySelectorAll('.input');
+  const getIdInput = document.querySelectorAll('#color');
+  // Pintando outras divs
+  for (let index = 0; index < getClassInput.length; index += 1) {
+    getClassInput[index].addEventListener('change', () => {
+      getIdInput[index].style.backgroundColor = `${hexToRgb(getClassInput[index].value)}`;
+      saveColorPalette();
+    });
+  }
+};
 const verify = () => {
   if (colorPalette) {
     sectionPalette.innerHTML = localStorage.getItem('colorPalette');
@@ -91,7 +109,6 @@ const verify = () => {
     getSectionPalette.innerHTML = localStorage.getItem('pixelBoard');
   }
 };
-
 // Criando botão
 const creatButton = () => {
   // elemento, idElemento, posicao, text, classElement
@@ -101,38 +118,70 @@ const creatButton = () => {
   // Adicionando evento para pintar
   button.addEventListener('click', paintDivsColor);
 };
-
 // Função para capturar cores
 // eslint-disable-next-line max-lines-per-function
 const selectedColor = () => {
   const getColors = document.querySelectorAll('.color');
+  const getDivsBlank = document.querySelectorAll('#color');
   getColors[0].className = 'color selected';
+
   for (let index = 0; index < getColors.length; index += 1) {
     getColors[index].addEventListener('click', () => {
+
       for (let index1 = 0; index1 < getColors.length; index1 += 1) {
         if (getColors[index1].className === 'color selected') {
           getColors[index1].className = 'color';
         }
       }
+
       if (getColors[index].className === 'color') {
         getColors[index].className = 'color selected';
       }
     });
+
+    getDivsBlank[index].addEventListener('click', () => {
+
+      for (let index1 = 0; index1 < getColors.length; index1 += 1) {
+        if (getColors[index1].className === 'color selected') {
+          getColors[index1].className = 'color';
+        }
+        if (getDivsBlank[index1].className === 'selected') {
+          getDivsBlank[index1].className = '';
+        }
+      }
+
+      if (getDivsBlank[index].className === '') {
+        getDivsBlank[index].className = 'selected';
+      }
+    });
   }
 };
-
+// Função para converter cor Hexadecial em RGB
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`;
+  // result ? {
+  //   r: parseInt(result[1], 16),
+  //   g: parseInt(result[2], 16),
+  //   b: parseInt(result[3], 16),
+  // } : null;
+}
 // Função para pintar cores
 const paintPixels = () => {
   const getPixels = document.querySelectorAll('.pixel');
   for (let index = 0; index < getPixels.length; index += 1) {
     getPixels[index].addEventListener('click', () => {
       const selected = document.querySelector('.selected');
+      if (selected.className === 'input selected') {
+        console.log(`Cor selecionada: ${hexToRgb(selected.value)}`);
+        getPixels[index].style.backgroundColor = `${hexToRgb(selected.value)}`;
+        savePixelBoard();
+      }
       getPixels[index].style.backgroundColor = `${selected.style.backgroundColor}`;
       savePixelBoard();
     });
   }
 };
-
 // Função para limpar quadro de pixels
 const clearPixel = () => {
   // elemento, idElemento, posicao, text, classElement
@@ -148,7 +197,6 @@ const clearPixel = () => {
     savePixelBoard();
   });
 };
-
 // Função que cria pixells
 // eslint-disable-next-line max-lines-per-function, complexity, sonarjs/cognitive-complexity
 const creatPixell = (turn) => {   
@@ -236,11 +284,10 @@ const creatPixell = (turn) => {
   paintPixels();
   savePixelBoard();
 };
-
 // eslint-disable-next-line max-lines-per-function
 const input = () => {
-  const getInput = document.querySelector('#board-size');
-  const getInputButton = document.querySelector('#generate-board');
+  const getInput = document.querySelector('#numbersPixel');
+  const getInputButton = document.querySelector('#vqv');
   if (pixelBoard === null) {
     creatPixell(5);
   }
@@ -272,6 +319,8 @@ window.onload = () => {
   selectedColor();
   // inserindo pixels
   input();
+  // Pintando divs adicionadas
+  paintOtherDivs();
   // Pintando pixels
   paintPixels();
   // Limpando pixels
